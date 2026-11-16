@@ -309,7 +309,7 @@ section { padding-block: 130px; }
 .step .txt li { display: flex; gap: 12px; align-items: baseline; }
 .step .txt li::before { content: ""; width: 14px; height: 1px; background: var(--navy); flex: none; transform: translateY(-4px); }
 .step .tag { justify-self: start; font: 500 10.5px var(--font-b); letter-spacing: .14em; text-transform: uppercase; color: var(--white); background: var(--navy); padding: 6px 10px; }
-.step .vis { aspect-ratio: 4 / 3; max-width: 100%; background: var(--night); position: relative; overflow: hidden; }
+.step .vis { aspect-ratio: 4 / 3; max-width: 100%; background: var(--white); position: relative; overflow: hidden; }
 .step:nth-child(3n+2) .vis { aspect-ratio: 1; width: 78%; justify-self: center; }
 .step .vis svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 @media (max-width: 760px) { .step { grid-template-columns: minmax(0, 1fr); gap: 28px; } .step:nth-child(even) .txt { order: 0; } .step:nth-child(3n+2) .vis { width: 100%; } }
@@ -1164,7 +1164,10 @@ function illus(p) {
   else if (p.tipo === 'industrial') { g += box(-8, -6, 16, 10, 5.5, 1); for (var m = -8; m < 8; m += 2.6) g += pl([P(m, -6, 5.5), P(m + 1.3, -6, 6.6), P(m + 1.3, 4, 6.6), P(m, 4, 5.5)], '#4A5463'); g += box(5, 5, 4, 3, 3, 0) + fl(5, 5, 4, 3, 3, 1.5); }
   else if (p.tipo === 'residencial') { if (p.id === 'viviendas-residenciales') { for (var h = 0; h < 4; h++) { var hx = -8 + (h % 2) * 9, hy = -7 + Math.floor(h / 2) * 8; g += box(hx, hy, 6, 5, 3.2, h % 2 ? 2 : 0) + pl([P(hx, hy, 3.2), P(hx + 6, hy, 3.2), P(hx + 6, hy + 2.5, 4.6), P(hx, hy + 2.5, 4.6)], '#4A5463'); } } else { var n = (p.meses || 12) >= 18 ? 3 : 2, hs = [9 + r() * 3, 12 + r() * 4, 7 + r() * 3]; for (var tw = 0; tw < n; tw++) { var tx = -8 + tw * 6.5, ty = -6 + (tw % 2) * 3; g += box(tx, ty, 5, 5, hs[tw], tw % 2 ? 2 : 0) + fl(tx, ty, 5, 5, hs[tw], 1.1); } } }
   else { g += pl([P(-10, 2, 0), P(10, -2, 0), P(10, 1, 0), P(-10, 5, 0)], 'rgba(255,255,255,.2)', 'rgba(255,255,255,.45)'); for (var tr = 0; tr < 26; tr++) { var px = -9 + r() * 18, py = -8 + r() * 16; if (Math.abs(py - (2 - px * .2)) < 2.6) continue; var c1 = P(px, py, 1.8); g += seg(P(px, py, 0), c1, '#C9CED6', 1) + '<circle cx="' + c1[0].toFixed(1) + '" cy="' + (c1[1] - 3).toFixed(1) + '" r="' + (5 + r() * 4).toFixed(1) + '" fill="#16315C" stroke="#8FB0E6" stroke-width=".7"/>'; } g += box(-3, -8, 5, 3, 2.2, 1); }
-  return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="' + W + '" height="' + H + '" fill="#0C1422"/>' + g + '</svg>';
+  if (p.look === 'line') { g = g.replace(/fill="(#[0-9A-F]{6}|rgba\([^)]*\))"/g, 'fill="#FFFFFF"').replace(/stroke="(#[0-9A-F]{6}|#FFFFFF)"/g, 'stroke="#9AA3AE"').replace(/stroke-opacity="[^"]*"/g, 'stroke-opacity=".7"'); }
+  if (p.look === 'navy') { g = g.replace(/#0C1422|#10264A|#0F2341|#1D222A/g, '#132B52'); }
+  var bgc = p.look === 'line' ? '#FFFFFF' : p.look === 'navy' ? '#1B3A6B' : '#0C1422';
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="' + W + '" height="' + H + '" fill="' + bgc + '"/>' + g + '</svg>';
 }
 function mediaHTML(p) { var m = CONFIG.projects[p.id] || {}; return m.img ? '<img src="' + m.img + '" alt="' + esc(p.name) + '" loading="lazy">' : illus(p); }
 function plazo(p) { return (p.mesesMin ? p.mesesMin + ' a ' : '') + p.meses + ' meses'; }
@@ -1407,7 +1410,7 @@ window.addEventListener('resize', function () { setChrome(state); if (secOf(stat
 /* =================== PÁGINAS =================== */
 /* Método: pasos en zigzag */
 $('zig').innerHTML = STEPS.map(function (s, i) {
-  return '<div class="step"><span class="ghost" aria-hidden="true">0' + (i + 1) + '</span><div class="txt"><b>0' + (i + 1) + '</b><h3>' + s.t + '</h3><span class="tag">' + s.tag + '</span><p>' + s.p + '</p><ul>' + s.li.map(function (l) { return '<li>' + l + '</li>'; }).join('') + '</ul></div><div class="vis">' + illus({ id: 'step' + i, tipo: s.tipo, meses: 12 }) + '</div></div>';
+  return '<div class="step"><span class="ghost" aria-hidden="true">0' + (i + 1) + '</span><div class="txt"><b>0' + (i + 1) + '</b><h3>' + s.t + '</h3><span class="tag">' + s.tag + '</span><p>' + s.p + '</p><ul>' + s.li.map(function (l) { return '<li>' + l + '</li>'; }).join('') + '</ul></div><div class="vis">' + illus({ id: 'step' + i, tipo: s.tipo, meses: 12, look: i % 2 ? 'line' : 'navy' }) + '</div></div>';
 }).join('');
 $('c-hero').innerHTML = illus({ id: 'contacto', tipo: 'comercial' }).replace('xMidYMid slice', 'xMidYMid slice');
 
