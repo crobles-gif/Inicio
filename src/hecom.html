@@ -1,0 +1,520 @@
+<title>HECOM</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="HECOM: dirección de proyectos y ejecución integral de obra para empresas e inversionistas. Certeza de costo y fecha, 15 años de experiencia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: plano de obra — banda oscura con cajetín, secciones sobre retícula, programa de obra tipo Gantt */
+:root {
+  --bg: #F2F3F5;
+  --surface: #FFFFFF;
+  --ink: #0B0D12;
+  --muted: #4A5261;
+  --steel: #8B939F;
+  --line: #D3D8E0;
+  --navy: #13294D;
+  --accent: #1E4A8C;
+  --band: #0C1424;
+  --band-2: #13294D;
+  --band-fg: #EEF1F5;
+  --band-muted: #A9B2C0;
+  --band-line: #2A3A57;
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --wrap: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B0D12; --surface: #131820; --ink: #E7EAEF; --muted: #A2AAB6; --steel: #6E7783;
+    --line: #262D39; --navy: #8FB0E6; --accent: #7FA3E0;
+    --band: #070A10; --band-2: #0F1F3B; --band-fg: #EEF1F5; --band-muted: #A2AAB6; --band-line: #24324B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B0D12; --surface: #131820; --ink: #E7EAEF; --muted: #A2AAB6; --steel: #6E7783;
+  --line: #262D39; --navy: #8FB0E6; --accent: #7FA3E0;
+  --band: #070A10; --band-2: #0F1F3B; --band-fg: #EEF1F5; --band-muted: #A2AAB6; --band-line: #24324B;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--band);
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.wrap {
+  max-width: var(--wrap); margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) {
+  .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); }
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 85%; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-size: clamp(30px, 4.2vw, 46px); font-weight: 700; }
+h3 { font-size: 21px; font-weight: 650; font-stretch: 100%; line-height: 1.25; }
+p { margin: 0; }
+.label {
+  font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.lede { font-size: 19px; color: var(--muted); max-width: 62ch; }
+
+/* ---------- Encabezado ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--band); color: var(--band-fg); border-bottom: 1px solid var(--band-line);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.brand { display: flex; align-items: baseline; gap: 10px; text-decoration: none; }
+.brand b { font-family: var(--font-display); font-weight: 800; font-stretch: 125%; font-size: 22px; letter-spacing: 0.06em; }
+.brand span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--band-muted); }
+.nav { display: flex; gap: 22px; align-items: center; font-size: 15px; }
+.nav a { text-decoration: none; color: var(--band-muted); }
+.nav a:hover { color: var(--band-fg); }
+.nav .cta-sm { color: var(--band-fg); border: 1px solid var(--band-muted); padding: 7px 14px; }
+.nav .cta-sm:hover { background: var(--band-fg); color: var(--band); }
+@media (max-width: 820px) { .nav a:not(.cta-sm) { display: none; } .brand span { display: none; } }
+
+/* ---------- Héroe ---------- */
+.hero {
+  background:
+    linear-gradient(var(--band-line) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, var(--band-line) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(160deg, var(--band) 30%, var(--band-2));
+  background-blend-mode: normal;
+  color: var(--band-fg);
+  position: relative;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(160deg, var(--band) 25%, transparent 70%); opacity: 0.85;
+}
+.hero .wrap {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 56px; align-items: end;
+  padding-block: 88px 72px;
+}
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-block: 56px 48px; } }
+.hero .label { color: var(--band-muted); }
+.hero h1 {
+  font-size: clamp(40px, 6.2vw, 76px); font-weight: 750; font-stretch: 80%;
+  margin-top: 18px; letter-spacing: -0.02em;
+}
+.hero h1 em { font-style: normal; color: var(--steel); }
+.hero .lede { color: var(--band-muted); margin-top: 24px; }
+.actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;
+  font-family: var(--font-body); font-weight: 600; font-size: 16px;
+  padding: 14px 22px; border: 1px solid transparent;
+}
+.btn-primary { background: var(--band-fg); color: var(--band); }
+.btn-primary:hover { background: #FFFFFF; }
+.btn-ghost { color: var(--band-fg); border-color: var(--band-line); }
+.btn-ghost:hover { border-color: var(--band-muted); }
+
+/* Cajetín de plano */
+.cajetin {
+  border: 1.5px solid var(--band-muted); font-family: var(--font-mono); font-size: 13px;
+  background: rgba(7, 10, 16, 0.55);
+}
+.cajetin .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); border-top: 1px solid var(--band-line); }
+.cajetin .row:first-child { border-top: 0; }
+.cajetin .k { padding: 10px 12px; color: var(--band-muted); border-right: 1px solid var(--band-line); text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; }
+.cajetin .v { padding: 10px 12px; color: var(--band-fg); }
+.cajetin .head { display: flex; justify-content: space-between; padding: 10px 12px; background: var(--band-fg); color: var(--band); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; font-size: 11.5px; }
+.cajetin .ok { color: #9FD3A8; }
+
+/* ---------- Secciones ---------- */
+section { padding-block: 96px; }
+@media (max-width: 720px) { section { padding-block: 64px; } }
+.sec-head { display: grid; gap: 16px; max-width: 760px; margin-bottom: 48px; }
+.alt { background: var(--surface); border-block: 1px solid var(--line); }
+
+/* Frases del cliente */
+.quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.quote { background: var(--surface); padding: 26px 24px; display: grid; gap: 14px; align-content: space-between; }
+.quote p { font-family: var(--font-display); font-stretch: 90%; font-size: 21px; line-height: 1.3; font-weight: 550; }
+.quote span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.pains { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 40px; margin-top: 56px; }
+@media (max-width: 980px) { .pains { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .pains { grid-template-columns: minmax(0, 1fr); } }
+.pain { display: grid; gap: 6px; border-top: 2px solid var(--ink); padding-top: 14px; }
+.pain p { color: var(--muted); }
+
+.stat {
+  margin-top: 64px; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 24px 48px; align-items: end;
+  border: 1px solid var(--line); background: var(--surface); padding: 32px;
+}
+.stat .n { font-family: var(--font-display); font-weight: 750; font-stretch: 75%; font-size: clamp(56px, 8vw, 88px); line-height: 0.9; color: var(--navy); font-variant-numeric: tabular-nums; }
+.stat .n small { display: block; font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--muted); margin-top: 10px; font-stretch: 100%; }
+.stat .src { font-size: 15px; color: var(--muted); }
+.stat .src strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 760px) { .stat { grid-template-columns: 1fr 1fr; } .stat .src { grid-column: 1 / -1; } }
+
+/* Proceso */
+.steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); counter-reset: s; border-top: 1px solid var(--line); }
+.step { counter-increment: s; padding: 24px 22px 8px 0; display: grid; gap: 10px; align-content: start; position: relative; }
+.step::before { content: "0" counter(s); font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+.step::after { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; background: var(--accent); }
+.step p { color: var(--muted); font-size: 15.5px; }
+.step .tag { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--line); padding: 3px 8px; justify-self: start; }
+@media (max-width: 980px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+
+/* Comparativa */
+.models { margin-top: 72px; }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--bg); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15.5px; }
+th, td { text-align: left; vertical-align: top; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+thead th { background: var(--ink); color: var(--bg); font-family: var(--font-display); font-stretch: 90%; font-size: 19px; font-weight: 650; }
+thead th:first-child { background: var(--ink); }
+thead th small { display: block; font-family: var(--font-body); font-size: 13.5px; font-weight: 400; opacity: 0.75; margin-top: 4px; }
+tbody th { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; width: 22%; }
+.choose { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; margin-top: 28px; color: var(--muted); font-size: 15.5px; }
+.choose strong { color: var(--ink); }
+
+/* Garantías */
+.guarantees { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 980px) { .guarantees { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .guarantees { grid-template-columns: minmax(0, 1fr); } }
+.g { border: 1px solid var(--line); background: var(--surface); padding: 26px 24px; display: grid; gap: 12px; align-content: start; }
+.g .label { color: var(--accent); }
+.g p { color: var(--muted); font-size: 15.5px; }
+.note { margin-top: 24px; font-size: 14.5px; color: var(--muted); max-width: 80ch; }
+
+/* Programa de obra */
+.gantt { border: 1px solid var(--line); background: var(--surface); overflow-x: auto; }
+.gantt-inner { min-width: 760px; }
+.g-row { display: grid; grid-template-columns: 300px 150px minmax(0, 1fr); align-items: center; border-top: 1px solid var(--line); }
+.g-row:first-child { border-top: 0; }
+.g-row > div { padding: 14px 16px; }
+.g-name strong { display: block; font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.g-name span { display: block; font-size: 13.5px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.g-model { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.g-track {
+  position: relative; height: 100%; min-height: 52px; display: flex; align-items: center;
+  background: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / 18 - 1px), var(--line) calc(100% / 18 - 1px), var(--line) calc(100% / 18));
+}
+.bar { height: 16px; background: var(--navy); width: calc(var(--m) / 18 * 100%); position: relative; }
+.bar.range { background: linear-gradient(90deg, var(--navy) calc(var(--a) / var(--m) * 100%), transparent 0), repeating-linear-gradient(135deg, var(--navy) 0 3px, transparent 3px 7px); }
+.bar b { position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; white-space: nowrap; color: var(--ink); font-variant-numeric: tabular-nums; }
+.g-head { background: var(--bg); }
+.g-head > div { padding-block: 10px; }
+.g-scale { display: grid; grid-template-columns: repeat(6, 1fr); font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); }
+.g-scale span { border-left: 1px solid var(--line); padding-left: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 16px; font-size: 14px; color: var(--muted); }
+.legend i { display: inline-block; width: 22px; height: 10px; background: var(--navy); margin-right: 8px; vertical-align: middle; }
+.legend i.h { background: repeating-linear-gradient(135deg, var(--navy) 0 3px, transparent 3px 7px); border: 1px solid var(--navy); }
+
+.trust { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px 40px; align-items: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); }
+.trust .big { font-family: var(--font-display); font-weight: 800; font-stretch: 75%; font-size: 84px; line-height: 0.85; color: var(--navy); }
+.trust p { max-width: 60ch; color: var(--muted); }
+.trust p strong { color: var(--ink); }
+@media (max-width: 560px) { .trust { grid-template-columns: 1fr; } }
+
+/* No es para ti */
+.notfor { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; }
+@media (max-width: 860px) { .notfor { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+.notfor ol { list-style: none; margin: 0; padding: 0; display: grid; }
+.notfor li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+.notfor li:last-child { border-bottom: 1px solid var(--line); }
+.notfor li::before { content: "×"; font-family: var(--font-mono); color: var(--steel); font-size: 18px; line-height: 1.4; }
+
+/* App */
+.app { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 56px; align-items: center; }
+@media (max-width: 860px) { .app { grid-template-columns: minmax(0, 1fr); } }
+.phone {
+  justify-self: center; width: min(100%, 290px); aspect-ratio: 9 / 18; max-width: 100%;
+  border: 10px solid var(--ink); border-radius: 34px; background: var(--bg); padding: 22px 16px;
+  display: grid; gap: 12px; align-content: start; font-size: 13px;
+}
+.phone .ph-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+.phone .ph-sub { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.kpi { background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; display: grid; gap: 6px; }
+.kpi .t { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+.kpi .t b { color: var(--ink); font-family: var(--font-mono); font-weight: 500; }
+.meter { height: 6px; background: var(--line); }
+.meter i { display: block; height: 100%; background: var(--navy); }
+.soon { display: inline-block; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; }
+
+/* Contacto */
+.contact { background: var(--band); color: var(--band-fg); }
+.contact .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 56px; }
+@media (max-width: 860px) { .contact .wrap { grid-template-columns: minmax(0, 1fr); gap: 36px; } }
+.contact .lede, .contact .label { color: var(--band-muted); }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+.mail a { font-family: var(--font-display); font-stretch: 90%; font-weight: 650; font-size: clamp(24px, 3.4vw, 34px); text-decoration: none; border-bottom: 2px solid var(--steel); overflow-wrap: anywhere; user-select: all; }
+.copy { background: transparent; color: var(--band-fg); border: 1px solid var(--band-line); padding: 8px 14px; font: 500 14px var(--font-body); cursor: pointer; }
+.copy:hover { border-color: var(--band-muted); }
+.brief { border: 1px solid var(--band-line); padding: 26px; display: grid; gap: 14px; align-content: start; }
+.brief ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--band-muted); }
+
+footer { background: var(--band); color: var(--band-muted); border-top: 1px solid var(--band-line); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 28px; }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><b>HECOM</b><span>Dirección de proyectos</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#como-trabajamos">Cómo trabajamos</a>
+      <a href="#garantias">Garantías</a>
+      <a href="#proyectos">Proyectos</a>
+      <a class="cta-sm" href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="label">Dirección de proyectos y ejecución de obra · 15 años</p>
+        <h1>No enfrentes solo una inversión que <em>no es tu especialidad.</em></h1>
+        <p class="lede">Antes de cotizarte, entendemos tu proyecto a fondo y conocemos a tu equipo. Después medimos dos cosas: tu proyecto y tu capacidad real para ejecutarlo. Así tu obra termina en la fecha y el presupuesto que acordamos.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contacto">Agenda una plática sin costo</a>
+          <a class="btn btn-ghost" href="#como-trabajamos">Cómo trabajamos</a>
+        </div>
+      </div>
+      <div class="cajetin" aria-label="Lo que HECOM entrega en cada proyecto">
+        <div class="head"><span>Tu proyecto</span><span>Hoja 1 de 1</span></div>
+        <div class="row"><div class="k">Fecha</div><div class="v">Comprometida por escrito <span class="ok">✓</span></div></div>
+        <div class="row"><div class="k">Costo</div><div class="v">Proyectado cada quincena <span class="ok">✓</span></div></div>
+        <div class="row"><div class="k">Cambios</div><div class="v">Ninguno sin tu autorización <span class="ok">✓</span></div></div>
+        <div class="row"><div class="k">Información</div><div class="v">Siempre al día, en tu teléfono <span class="ok">✓</span></div></div>
+        <div class="row"><div class="k">Responsable</div><div class="v">HECOM</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="situacion">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Para empresarios, inversionistas y directores</p>
+        <h2>Tu negocio no es construir. Tu inversión sí depende de que la obra salga bien.</h2>
+        <p class="lede">Vas a abrir una tienda, ampliar una nave o desarrollar un terreno. Tienes arquitecto, supervisor y contratistas, pero nadie responde por el conjunto. Esto es lo que escuchamos en la primera plática:</p>
+      </div>
+      <div class="quotes">
+        <div class="quote"><p>“Todos me dicen que van bien y la obra no avanza.”</p><span>Dirección general</span></div>
+        <div class="quote"><p>“Cada junta sale un extra nuevo y nadie me avisó antes.”</p><span>Finanzas</span></div>
+        <div class="quote"><p>“Mi gerente ya no hace su trabajo por andar en la obra.”</p><span>Operaciones</span></div>
+        <div class="quote"><p>“Tengo abogados y compradores, pero no les da la vida para la obra.”</p><span>Dirección general</span></div>
+        <div class="quote"><p>“No quiero andar persiguiendo a diez contratistas.”</p><span>Dueño inversionista</span></div>
+        <div class="quote"><p>“Respondo por esta obra ante el consejo y no tengo forma de saber si va a salir bien.”</p><span>Ejecutivo responsable</span></div>
+      </div>
+
+      <div class="pains">
+        <div class="pain"><h3>El costo final nadie lo sabe</h3><p>El presupuesto no alcanza y aparecen extraordinarios que nadie anticipó.</p></div>
+        <div class="pain"><h3>Cada semana de retraso cuesta</h3><p>Es ingreso que no llega y gasto de operación antes de abrir.</p></div>
+        <div class="pain"><h3>Tu equipo deja su trabajo</h3><p>Tus ejecutivos atienden la obra en lugar del negocio.</p></div>
+        <div class="pain"><h3>Decides con información incompleta</h3><p>Cada proveedor reporta lo suyo, y los datos no cuadran entre sí.</p></div>
+      </div>
+
+      <div class="stat">
+        <div class="n">57 %<small>de los proyectos terminó dentro del presupuesto inicial</small></div>
+        <div class="n">52 %<small>terminó a tiempo</small></div>
+        <p class="src"><strong>Pulse of the Profession 2018, Project Management Institute.</strong> Las organizaciones que dirigen sus proyectos con método desperdician mucho menos de lo que invierten. Ese método es lo que HECOM pone en tu obra.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-trabajamos" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Cómo trabajamos</p>
+        <h2>Primero entendemos tu proyecto. Después te decimos cómo hacerlo.</h2>
+        <p class="lede">Muchos clientes llegan con un terreno y una idea, sin saber cuánto cuesta, cuánto tarda o si es posible. Te acompañamos desde esa primera pregunta.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Plática inicial</h3><p>Nos cuentas qué está en juego: la fecha, la inversión y ante quién respondes.</p><span class="tag">Sin costo</span></div>
+        <div class="step"><h3>Diagnóstico</h3><p>Medimos la complejidad de tu proyecto y la capacidad de tu equipo para ejecutarlo. Te dice qué nivel de dirección necesitas.</p><span class="tag">Acreditable</span></div>
+        <div class="step"><h3>Definición</h3><p>Aclaramos uso, tamaño, ubicación y alcance. Recibes programa maestro, presupuesto base y tablero.</p></div>
+        <div class="step"><h3>Dirección o ejecución</h3><p>Según tu modelo, dirigimos a tus proveedores o nos hacemos cargo de toda la obra, con cortes periódicos.</p></div>
+        <div class="step"><h3>Entrega</h3><p>Tu tienda, nave o desarrollo operando en la fecha pactada.</p></div>
+      </div>
+
+      <div class="models">
+        <div class="sec-head" style="margin-bottom:28px">
+          <h2 style="font-size:clamp(26px,3.2vw,36px)">Dos formas de trabajar con HECOM</h2>
+          <p class="lede">La diferencia está en quién contrata a los ejecutores y quién asume el riesgo de la obra.</p>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th scope="col"><span class="label" style="color:inherit;opacity:.7">Concepto</span></th><th scope="col">Dirección de Proyectos<small>Tú conservas los contratos</small></th><th scope="col">Ejecución Integral<small>Un solo responsable, del terreno a la entrega</small></th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Tú aportas</th><td>Inversión, decisiones y contratos</td><td>Objetivos, inversión y aprobaciones</td></tr>
+              <tr><th scope="row">HECOM aporta</th><td>Dirección y control</td><td>Dirección y ejecución</td></tr>
+              <tr><th scope="row">Quién contrata</th><td>Tú, con tus proveedores y especialistas</td><td>HECOM, con sus contratistas integrados</td></tr>
+              <tr><th scope="row">Riesgo de obra</th><td>Lo conservas; HECOM coordina a todos los participantes</td><td>HECOM asume las obligaciones de construcción pactadas</td></tr>
+              <tr><th scope="row">Fecha</th><td>Se compromete después de validarla con los ejecutores</td><td>Obligación contractual, con pena por cada día de retraso</td></tr>
+              <tr><th scope="row">Costo</th><td>Certeza de costo cuando los proveedores aceptan asumirla</td><td>Costo garantizado por contrato para el alcance pactado</td></tr>
+              <tr><th scope="row">Información</th><td>Reuniones de seguimiento y aplicación</td><td>Reuniones de seguimiento y aplicación</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="choose">
+          <p><strong>Te conviene Dirección de Proyectos</strong> si tienes poder de compra y quieres conservar los contratos y el control, pero necesitas a alguien que integre todo.</p>
+          <p><strong>Te conviene Ejecución Integral</strong> si prefieres concentrar la responsabilidad en uno solo y liberar a tu gente para que atienda el negocio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="garantias">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Garantías</p>
+        <h2>Lo que prometemos, lo firmamos.</h2>
+        <p class="lede">Si dirigimos y construimos, ¿quién nos vigila? El contrato. Nuestro equipo de dirección vigila la construcción, y las garantías de costo y tiempo nos vigilan a nosotros.</p>
+      </div>
+      <div class="guarantees">
+        <div class="g"><p class="label">Ejecución Integral</p><h3>Costo garantizado</h3><p>Precio cerrado para el alcance pactado, respaldado por un análisis de riesgo de cada insumo.</p></div>
+        <div class="g"><p class="label">Ejecución Integral</p><h3>Fecha por contrato</h3><p>La fecha de entrega es obligación contractual, con una pena por cada día de retraso.</p></div>
+        <div class="g"><p class="label">Dirección de Proyectos</p><h3>Límite de Garantía</h3><p>Nuestros honorarios tienen un tope firmado, sin importar cuánto crezca la inversión.</p></div>
+        <div class="g"><p class="label">Ambos modelos</p><h3>Sin sorpresas</h3><p>Ninguna desviación de costo o plazo aparece en un reporte sin haberte alertado antes. Si pasa, te bonificamos parte del honorario de ese periodo.</p></div>
+      </div>
+      <p class="note">Los cambios de alcance, las decisiones tardías del cliente, las condiciones extraordinarias y los permisos que dependen del gobierno se tratan por contrato. En Dirección de Proyectos, la certeza de costo y la pena por día dependen de que los proveedores la asuman; te lo planteamos con claridad desde el inicio.</p>
+    </div>
+  </section>
+
+  <section id="proyectos" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Proyectos</p>
+        <h2>Tiendas en cuatro meses. Naves en cinco. Del terreno a la apertura.</h2>
+        <p class="lede">Una muestra de nuestro programa de obra en proyectos comerciales, industriales, de vivienda y obra pública.</p>
+      </div>
+      <div class="gantt" role="table" aria-label="Plazo de obra por proyecto, en meses">
+        <div class="gantt-inner">
+          <div class="g-row g-head" role="row">
+            <div class="label" role="columnheader">Proyecto</div>
+            <div class="label" role="columnheader">Modelo</div>
+            <div role="columnheader"><div class="g-scale" aria-label="Meses"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span><span>15 m</span></div></div>
+          </div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Tienda, cadena nacional de autopartes</strong><span>Del terreno a la apertura</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:4"><b>4 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Tienda, cadena nacional de muebles y crédito</strong><span>Del terreno a la apertura</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:4"><b>4 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Tienda, cadena nacional de electrónica y crédito</strong><span>Del terreno a la apertura</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:4"><b>4 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Nave industrial IMPSA</strong><span>Del terreno a la entrega de la nave</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:5"><b>5 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Agribeans</strong><span>Habilitado de nave nueva</span></div><div class="g-model" role="cell">Dirección de Proyectos</div><div class="g-track" role="cell"><div class="bar" style="--m:5"><b>5 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Viviendas residenciales</strong><span>Del terreno a la entrega de la vivienda</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar range" style="--m:12;--a:4"><b>4 a 12 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Parque Lineal Universitario</strong><span>Obra pública, de la recepción de áreas a la entrega</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:12"><b>12 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Vivienda Parque Carmelitas</strong><span>64 departamentos de interés social</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:12"><b>12 meses</b></div></div></div>
+          <div class="g-row" role="row"><div class="g-name" role="cell"><strong>Vivienda Najil Iik, Mérida</strong><span>42 departamentos residenciales</span></div><div class="g-model" role="cell">Ejecución Integral</div><div class="g-track" role="cell"><div class="bar" style="--m:18"><b style="left:auto;right:10px;color:var(--bg)">18 meses</b></div></div></div>
+        </div>
+      </div>
+      <div class="legend"><span><i></i>Plazo de obra</span><span><i class="h"></i>Rango según el proyecto</span></div>
+
+      <div class="trust">
+        <div class="big">15</div>
+        <p><strong>Años construyendo para algunas de las empresas más importantes de México.</strong> En cada obra, la dirección del proyecto fue lo que permitió cumplir la fecha y cuidar la inversión. Hoy llevamos esa misma disciplina a empresas que no tienen un área de construcción propia.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="para-quien">
+    <div class="wrap notfor">
+      <div class="sec-head" style="margin-bottom:0">
+        <p class="label">Antes de llamarnos</p>
+        <h2>HECOM no es para ti si…</h2>
+        <p class="lede">Preferimos decirlo desde ahora. Si te reconoces en varios de estos puntos, probablemente no nos necesitas.</p>
+      </div>
+      <ol>
+        <li>Tienes una oficina de dirección de proyectos interna que administra todos tus proyectos.</li>
+        <li>La inversión asignada a tu proyecto no es significativa para ti o tu empresa.</li>
+        <li>Tienes la certeza de que el monto y el plazo no se moverán, pase lo que pase.</li>
+        <li>El proyecto es de lo que tu empresa hace todos los días.</li>
+        <li>La fecha de entrega no afecta tu operación ni a tus clientes.</li>
+        <li>Solo buscas alguien que te cotice algo barato.</li>
+        <li>Tu equipo tiene el tiempo, la experiencia y la autoridad para dirigir la obra sin descuidar su trabajo.</li>
+        <li>Prefieres enterarte de los problemas cuando ya pasaron.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="aplicacion" class="alt">
+    <div class="wrap app">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="soon">Próximamente</span>
+        <h2>Tu proyecto, siempre al día, en la palma de tu mano.</h2>
+        <p class="lede">Además de las reuniones de seguimiento, tendrás toda la información de tu obra en una aplicación: avance, costo contra presupuesto, cambios autorizados y próximos hitos. Llega al consejo o con tu cliente con un tablero, no con excusas.</p>
+      </div>
+      <div class="phone" aria-hidden="true">
+        <div><div class="ph-sub">Proyecto de ejemplo</div><div class="ph-title">Nave industrial · Semana 14</div></div>
+        <div class="kpi"><div class="t">Avance de obra <b>68 %</b></div><div class="meter"><i style="width:68%"></i></div></div>
+        <div class="kpi"><div class="t">Costo ejercido <b>64 %</b></div><div class="meter"><i style="width:64%"></i></div></div>
+        <div class="kpi"><div class="t">Fecha de entrega <b>En tiempo</b></div></div>
+        <div class="kpi"><div class="t">Cambios pendientes <b>2 por autorizar</b></div></div>
+        <div class="kpi"><div class="t">Próximo hito <b>Losa de concreto</b></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section id="contacto" class="contact">
+  <div class="wrap">
+    <div>
+      <p class="label">Contacto</p>
+      <h2 style="margin-top:16px">Cuéntanos qué está en juego.</h2>
+      <p class="lede" style="margin-top:18px">La primera plática no tiene costo. Al final sabrás si necesitas dirección para tu proyecto y cuál de los dos modelos te conviene.</p>
+      <div class="mail">
+        <a href="mailto:contacto@hecom.com.mx" id="correo">contacto@hecom.com.mx</a>
+        <button class="copy" type="button" id="copiar">Copiar correo</button>
+      </div>
+    </div>
+    <div class="brief">
+      <p class="label">Para empezar, escríbenos</p>
+      <ul>
+        <li>Qué quieres construir y dónde.</li>
+        <li>La fecha en que necesitas operar.</li>
+        <li>Un rango aproximado de inversión.</li>
+        <li>Quién toma la decisión en tu empresa.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="anio">2026</span> HECOM · Dirección de proyectos de construcción</span>
+    <span>contacto@hecom.com.mx</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var y = document.getElementById('anio'); if (y) y.textContent = new Date().getFullYear();
+    var b = document.getElementById('copiar'), mail = 'contacto@hecom.com.mx';
+    if (!b) return;
+    b.addEventListener('click', function () {
+      function done(t) { b.textContent = t; setTimeout(function () { b.textContent = 'Copiar correo'; }, 2000); }
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(document.getElementById('correo'));
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done('Seleccionado');
+      }
+      try {
+        navigator.clipboard.writeText(mail).then(function () { done('Copiado'); }, fallback);
+      } catch (e) { fallback(); }
+    });
+  })();
+</script>
