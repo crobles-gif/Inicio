@@ -309,10 +309,22 @@ section { padding-block: 130px; }
 .step .txt li { display: flex; gap: 12px; align-items: baseline; }
 .step .txt li::before { content: ""; width: 14px; height: 1px; background: var(--navy); flex: none; transform: translateY(-4px); }
 .step .tag { justify-self: start; font: 500 10.5px var(--font-b); letter-spacing: .14em; text-transform: uppercase; color: var(--white); background: var(--navy); padding: 6px 10px; }
-.step .vis { aspect-ratio: 4 / 3; max-width: 100%; background: var(--white); position: relative; overflow: hidden; }
-.step:nth-child(3n+2) .vis { aspect-ratio: 1; width: 78%; justify-self: center; }
+.step .txt p { max-width: 34ch; }
+.step .fig { position: relative; justify-self: center; width: var(--w, 62%); max-width: 100%; }
+.step .vis { aspect-ratio: var(--ar, 1); max-width: 100%; position: relative; overflow: hidden; z-index: 1; }
 .step .vis svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-@media (max-width: 760px) { .step { grid-template-columns: minmax(0, 1fr); gap: 28px; } .step:nth-child(even) .txt { order: 0; } .step:nth-child(3n+2) .vis { width: 100%; } }
+.step .plan { position: absolute; z-index: 2; width: 46%; aspect-ratio: 1; right: -22%; bottom: -14%; pointer-events: none; }
+.step:nth-child(even) .plan { right: auto; left: -22%; }
+.step .plan svg { width: 100%; height: 100%; display: block; }
+@media (max-width: 760px) { .step { grid-template-columns: minmax(0, 1fr); gap: 28px; } .step:nth-child(even) .txt { order: 0; } .step .fig { width: 78%; } .step .plan { right: -8%; } .step:nth-child(even) .plan { left: -8%; } }
+
+/* Transición entre páginas */
+#pt { position: fixed; inset: 0; z-index: 90; background: var(--white); display: grid; place-items: center; transform: translateY(100%); pointer-events: none; }
+#pt .mk { display: grid; justify-items: center; gap: 10px; }
+#pt .mk svg rect, #pt .mk svg path { stroke-dasharray: 120; stroke-dashoffset: 120; }
+#pt.on .mk svg rect, #pt.on .mk svg path { animation: draw .7s var(--expo) forwards .25s; }
+#pt .mk span { font: 500 8px var(--font-b); letter-spacing: .4em; text-transform: uppercase; color: #9A9A9A; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
 
 .dims { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); border-top: 1px solid var(--line); }
 .dim { padding: 26px 26px 26px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 4px 14px; }
@@ -1028,6 +1040,7 @@ footer .legal { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </footer>
 
+<div id="pt" aria-hidden="true"><div class="mk"><svg width="44" height="44" viewBox="0 0 30 30"><rect x="1.5" y="1.5" width="27" height="27" fill="none" stroke="#131313" stroke-width="1.6"/><path d="M9 7v16M21 7v16M9 15h12" stroke="#1B3A6B" stroke-width="2.6" fill="none"/></svg><span>Cargando</span></div></div>
 <div id="sheet-root"></div>
 
 <script>
@@ -1410,9 +1423,15 @@ window.addEventListener('resize', function () { setChrome(state); if (secOf(stat
 /* =================== PÁGINAS =================== */
 /* Método: pasos en zigzag */
 $('zig').innerHTML = STEPS.map(function (s, i) {
-  return '<div class="step"><span class="ghost" aria-hidden="true">0' + (i + 1) + '</span><div class="txt"><b>0' + (i + 1) + '</b><h3>' + s.t + '</h3><span class="tag">' + s.tag + '</span><p>' + s.p + '</p><ul>' + s.li.map(function (l) { return '<li>' + l + '</li>'; }).join('') + '</ul></div><div class="vis">' + illus({ id: 'step' + i, tipo: s.tipo, meses: 12, look: i % 2 ? 'line' : 'navy' }) + '</div></div>';
+  return '<div class="step"><span class="ghost" aria-hidden="true">0' + (i + 1) + '</span><div class="txt"><b>0' + (i + 1) + '</b><h3>' + s.t + '</h3><span class="tag">' + s.tag + '</span><p>' + s.p + '</p><ul>' + s.li.map(function (l) { return '<li>' + l + '</li>'; }).join('') + '</ul></div><div class="fig" style="--w:' + [62, 46, 70, 52, 58][i] + '%;--ar:' + ['1', '4/5', '4/3', '1', '5/4'][i] + '"><div class="vis">' + illus({ id: 'step' + i, tipo: s.tipo, meses: 12, look: i % 2 ? 'line' : 'navy' }) + '</div>' + (i % 2 === 0 ? '<div class="plan">' + planSVG(i) + '</div>' : '') + '</div></div>';
 }).join('');
 $('c-hero').innerHTML = illus({ id: 'contacto', tipo: 'comercial' }).replace('xMidYMid slice', 'xMidYMid slice');
+
+function planSVG(i) {
+  var r = rng('plan' + i), d = '';
+  for (var k = 0; k < 7; k++) { var x = 10 + r() * 60, y = 10 + r() * 60, w = 12 + r() * 26, h = 10 + r() * 24; d += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '"/>'; }
+  return '<svg viewBox="0 0 100 100" fill="none" stroke="#9AA3AE" stroke-width=".5" aria-hidden="true"><g transform="rotate(-18 50 50)"><rect x="6" y="6" width="88" height="88"/>' + d + '<path d="M6 40h88M52 6v88" stroke-dasharray="2 2"/></g></svg>';
+}
 
 /* Portafolio */
 var fstate = { tipo: 'todos', estado: 'todos', modelo: 'todos' };
@@ -1492,7 +1511,19 @@ function route() {
   else { fly.stop(); clearTimeout(timer); topBar.setAttribute('data-theme', 'light'); }
   if (target) requestAnimationFrame(function () { target.scrollIntoView({ block: 'start' }); }); else window.scrollTo(0, 0);
 }
-window.addEventListener('hashchange', function () { closeSheet(true); closeMenu(true); route(); });
+var lastView = null;
+window.addEventListener('hashchange', function () {
+  closeSheet(true); closeMenu(true);
+  var h = (location.hash || '').replace('#', ''), nv = VIEWS.indexOf(h) >= 0 ? h : (document.getElementById(h) && document.getElementById(h).closest('.view') ? document.getElementById(h).closest('.view').getAttribute('data-view') : 'inicio');
+  if (REDUCE || nv === current) return route();
+  var pt = $('pt'); pt.classList.add('on');
+  anim(pt, [{ transform: 'translateY(100%)' }, { transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.77,0,.175,1)' }).then(function () {
+    route();
+    return wait(450);
+  }).then(function () {
+    return anim(pt, [{ transform: 'none' }, { transform: 'translateY(-100%)' }], { duration: 800, easing: 'cubic-bezier(.77,0,.175,1)' });
+  }).then(function () { pt.style.transform = 'translateY(100%)'; pt.classList.remove('on'); });
+});
 
 /* Contacto */
 (function () {
